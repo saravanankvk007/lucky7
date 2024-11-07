@@ -1,0 +1,83 @@
+<DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset='UTF-8'>
+		<title> Lucky 7</title>
+	</head>
+	
+	<body>
+		<center> <h1> Welcome to Lucky 7 Game</h1><center>
+		
+		<div>
+			<h3> Play your bet (Rs 10):</h3>
+			<input type="radio" name="lucky7" id="lucky1" value='1' /> <label for='lucky1'> Below 7 </label>
+			<input type="radio" name="lucky7" id="lucky2" value='2' /> <label for='lucky2'> Lucky 7 </label>
+			<input type="radio" name="lucky7" id="lucky3" value='3' /> <label for='lucky3'> Above 7 </label>
+			
+			<button id='play' onclick='playgame()'>Play</button>
+		</div>
+		
+		<div id ='dice1'></div>
+		<div id ='dice2'></div>
+		<div id ='total'></div>
+		<div id ='status'></div>
+		
+		
+		<br/>
+		<br/>
+		<br/>
+		<button id='reset' onclick='window.reload()'> Reset and Play Again</button>
+		<button id='cunt' onclick=''> Continue Playing</button>
+		<script>
+		let cstatus = 0;
+			async function playgame(cstatus = 0) {
+			//
+			var val1 = document.getElementById('lucky1');
+			var val2 = document.getElementById('lucky2');
+			var val3 = document.getElementById('lucky3');
+			
+			var passVal = 0;
+			
+			if(val1.checked == true)
+			{
+				//
+				passVal = val1.value;
+			}
+			
+			if(val2.checked == true)
+			{
+				//
+				passVal = val2.value;
+			}
+			 
+			 if(val3.checked == true)
+			{
+				//
+				passVal = val3.value;
+			}
+			
+			if( passVal > 0){
+				const response = await fetch('index.php?passVal='+passVal+'&cstatus='+cstatus);
+				
+				const data = await response.json();
+				
+				document.getElementById('dice1').innerHTML = '<div> <p>Dice 1 :'+data.dice1+'</p></div>';
+				document.getElementById('dice2').innerHTML = '<div>Dice 2 :'+data.Dice2+'</div>';
+				document.getElementById('total').innerHTML = '<div> Total : '+data.Total+'</div>';
+				
+				var win = data.win == 0 ? 'loss' : 'Win';
+				
+				document.getElementById('status').innerHTML = '<div> Congratulation! you '+win+' Your Balance is now '+data.openBla+' Rs.</div>';
+				
+				
+			
+			} else{
+				alert("Please Select Any One option");
+				return false;
+			}
+			
+			}
+		</script>
+	</body>
+</html>
