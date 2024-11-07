@@ -9,12 +9,16 @@ $diceTwo = 0;
 
 $passVal = isset($_GET['passVal']) ? (int) $_GET['passVal']:0;
 $cstatus = isset($_GET['cstatus']) ? (int) $_GET['cstatus']:0;
+$cbalance = isset($_GET['cbalance']) ? (int) $_GET['cbalance']:0;
 
 $win = 0;
 if($cstatus == 0){
 	
 	$openBal = 100;
+}else if($cstatus == 1){
+	$openBal = $cbalance;
 }
+
 
 for($i=0; $i <=1; $i++){
 	

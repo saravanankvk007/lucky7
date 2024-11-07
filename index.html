@@ -4,16 +4,20 @@
 	<head>
 		<meta charset='UTF-8'>
 		<title> Lucky 7</title>
+		
 	</head>
 	
 	<body>
 		<center> <h1> Welcome to Lucky 7 Game</h1><center>
 		
 		<div>
+			<p> Open Balance : 100</p>
+			<p> Current Balance : <span id='openBla'>100</span></p>
 			<h3> Play your bet (Rs 10):</h3>
 			<input type="radio" name="lucky7" id="lucky1" value='1' /> <label for='lucky1'> Below 7 </label>
 			<input type="radio" name="lucky7" id="lucky2" value='2' /> <label for='lucky2'> Lucky 7 </label>
 			<input type="radio" name="lucky7" id="lucky3" value='3' /> <label for='lucky3'> Above 7 </label>
+			<input type="hidden" id="openBlahide" /> 
 			
 			<button id='play' onclick='playgame()'>Play</button>
 		</div>
@@ -27,8 +31,8 @@
 		<br/>
 		<br/>
 		<br/>
-		<button id='reset' onclick='window.reload()'> Reset and Play Again</button>
-		<button id='cunt' onclick=''> Continue Playing</button>
+		<button id='reset' onclick='window.location.reload()'> Reset and Play Again</button>
+		<button id='cunt' onclick='playgame(1)'> Continue Playing</button>
 		<script>
 		let cstatus = 0;
 			async function playgame(cstatus = 0) {
@@ -38,6 +42,7 @@
 			var val3 = document.getElementById('lucky3');
 			
 			var passVal = 0;
+			var cbalance = 0;
 			
 			if(val1.checked == true)
 			{
@@ -58,19 +63,23 @@
 			}
 			
 			if( passVal > 0){
-				const response = await fetch('index.php?passVal='+passVal+'&cstatus='+cstatus);
+				if(cstatus == 1){
+					cbalance = document.getElementById('openBlahide').value;
+				} 
+				const response = await fetch('index.php?passVal='+passVal+'&cstatus='+cstatus+'&cbalance='+cbalance);
 				
 				const data = await response.json();
 				
-				document.getElementById('dice1').innerHTML = '<div> <p>Dice 1 :'+data.dice1+'</p></div>';
-				document.getElementById('dice2').innerHTML = '<div>Dice 2 :'+data.Dice2+'</div>';
-				document.getElementById('total').innerHTML = '<div> Total : '+data.Total+'</div>';
+				document.getElementById('dice1').innerHTML = '<div><p>Dice 1 :'+data.dice1+'</p></div>';
+				document.getElementById('dice2').innerHTML = '<div><p>Dice 2 :'+data.Dice2+'</p></div>';
+				document.getElementById('total').innerHTML = '<div><p>Total : '+data.Total+'</p></div>';
 				
 				var win = data.win == 0 ? 'loss' : 'Win';
 				
 				document.getElementById('status').innerHTML = '<div> Congratulation! you '+win+' Your Balance is now '+data.openBla+' Rs.</div>';
 				
-				
+				document.getElementById('openBla').innerHTML = data.openBla;
+				document.getElementById('openBlahide').value = data.openBla;
 			
 			} else{
 				alert("Please Select Any One option");
